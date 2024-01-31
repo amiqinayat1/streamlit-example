@@ -25,6 +25,7 @@ def save_uploaded_file(uploaded_file):
 
 def display_video(video_path):
     st.video(video_path)
+st.write("this is")
 
 if __name__ == "__main__":
     main()
