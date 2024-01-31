@@ -1,47 +1,30 @@
-import altair as alt
-import numpy as np
-import pandas as pd
 import streamlit as st
+import cv2
+import tempfile
+import os
 
-"""
-# Welcome to Streamlit!
+def main():
+    st.title("Video Uploader App")
+    
+    uploaded_file = st.file_uploader("Choose a video file", type=["mp4", "avi", "mov"])
 
-Edit `/streamlit_app.py` to customize this app to your heart's desire :heart:.
-If you have any questions, checkout our [documentation](https://docs.streamlit.io) and [community
-forums](https://discuss.streamlit.io).
+    if uploaded_file is not None:
+        # Save the uploaded file to a temporary location
+        temp_location = save_uploaded_file(uploaded_file)
 
-In the meantime, below is an example of what you can do with just a few lines of code:
-"""
+        # Display the uploaded video
+        display_video(temp_location)
 
-"""
-## Sharoon App
-"""
-num_points = st.slider("Number of points in spiral", 1, 10000, 1100)
-num_turns = st.slider("Number of turns in spiral", 1, 300, 31)
+def save_uploaded_file(uploaded_file):
+    temp_location = os.path.join(tempfile.gettempdir(), uploaded_file.name)
 
-indices = np.linspace(0, 1, num_points)
-theta = 2 * np.pi * num_turns * indices
-radius = indices
+    with open(temp_location, 'wb') as f:
+        f.write(uploaded_file.read())
 
-x = radius * np.cos(theta)
-y = radius * np.sin(theta)
+    return temp_location
 
-df = pd.DataFrame({
-    "x": x,
-    "y": y,
-    "idx": indices,
-    "rand": np.random.randn(num_points),
-})
+def display_video(video_path):
+    st.video(video_path)
 
-st.altair_chart(alt.Chart(df, height=700, width=700)
-    .mark_point(filled=True)
-    .encode(
-        x=alt.X("x", axis=None),
-        y=alt.Y("y", axis=None),
-        color=alt.Color("idx", legend=None, scale=alt.Scale()),
-        size=alt.Size("rand", legend=None, scale=alt.Scale(range=[1, 150])),
-    ))
-st.image("https://educationecosystem.com/blog/wp-content/uploads/2021/01/1_Lad06lrjlU9UZgSTHUoyfA.png")
-col1, col2 = st.columns(2)
-col1.write("This is column 1")
-col2.write("This is column 2")
+if __name__ == "__main__":
+    main()
