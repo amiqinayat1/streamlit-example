@@ -42,3 +42,6 @@ st.altair_chart(alt.Chart(df, height=700, width=700)
         size=alt.Size("rand", legend=None, scale=alt.Scale(range=[1, 150])),
     ))
 st.image("https://educationecosystem.com/blog/wp-content/uploads/2021/01/1_Lad06lrjlU9UZgSTHUoyfA.png")
+col1, col2 = st.columns(2)
+col1.write("This is column 1")
+col2.write("This is column 2")
