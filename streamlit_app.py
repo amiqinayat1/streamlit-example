@@ -41,3 +41,4 @@ st.altair_chart(alt.Chart(df, height=700, width=700)
         color=alt.Color("idx", legend=None, scale=alt.Scale()),
         size=alt.Size("rand", legend=None, scale=alt.Scale(range=[1, 150])),
     ))
+st.image("https://educationecosystem.com/blog/wp-content/uploads/2021/01/1_Lad06lrjlU9UZgSTHUoyfA.png")
