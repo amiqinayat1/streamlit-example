@@ -1,31 +1,21 @@
 import streamlit as st
-import cv2
-import tempfile
-import os
+import pandas as pd
+from io import StringIO
 
-def main():
-    st.title("Video Uploader App")
-    
-    uploaded_file = st.file_uploader("Choose a video file", type=["mp4", "avi", "mov"])
+uploaded_file = st.file_uploader("Choose a file")
+if uploaded_file is not None:
+    # To read file as bytes:
+    bytes_data = uploaded_file.getvalue()
+    st.write(bytes_data)
 
-    if uploaded_file is not None:
-        # Save the uploaded file to a temporary location
-        temp_location = save_uploaded_file(uploaded_file)
+    # To convert to a string based IO:
+    stringio = StringIO(uploaded_file.getvalue().decode("utf-8"))
+    st.write(stringio)
 
-        # Display the uploaded video
-        display_video(temp_location)
+    # To read file as string:
+    string_data = stringio.read()
+    st.write(string_data)
 
-def save_uploaded_file(uploaded_file):
-    temp_location = os.path.join(tempfile.gettempdir(), uploaded_file.name)
-
-    with open(temp_location, 'wb') as f:
-        f.write(uploaded_file.read())
-
-    return temp_location
-
-def display_video(video_path):
-    st.video(video_path)
-st.write("this is")
-
-if __name__ == "__main__":
-    main()
+    # Can be used wherever a "file-like" object is accepted:
+    dataframe = pd.read_csv(uploaded_file)
+    st.write(dataframe)
